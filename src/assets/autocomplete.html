@@ -1,0 +1,291 @@
+<html>
+<head>
+    <title>live train status</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        var x = "", i;
+        $(document).ready(function () {
+            $("#findData").click(function () {
+                trainNo = $('#trainNo').val();
+                document.getElementById('global_loader').style.display = 'block';
+                $.ajax({
+                    method: "GET",
+                    crossDomain: true,
+                    url: "https://indianrailapi.com/api/v2/AutoCompleteTrainInformation/apikey/a1a72eb5ca2a37a39fe3900cdb7c5c0b/TrainNumberOrName/" + trainNo + "/",
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        if (data.Trains[0] == null) {
+                            warning1 = "NO TRAIN RUNNING ON THIS DATE";
+                            $("#demo").empty();
+                            document.getElementById("info1").innerHTML = warning1;
+                            $(document.getElementById("info1")).addClass("info1");
+
+                        }
+                        else {
+                            $("#info1").empty();
+                            x = "<table><tr><th>TRAIN NUMBER</th><th>TRAIN NAME</th><th>SOURCE STATION</th><th>DEPARTURE</th><th>DESTINATION STATION</th><th>ARRIVAL</th></tr>"
+                            for (i in data.Trains) {
+                                x += "<tr><td>" + data.Trains[i].TrainNo + "</td><td>"
+                                    + data.Trains[i].TrainName + "</td><td>"
+                                    + data.Trains[i].Source.Code + "</td><td>"
+                                    + data.Trains[i].Source.Arrival + "</td><td>"
+                                    + data.Trains[i].Destination.Code + "</td><td>"
+                                    + data.Trains[i].Destination.Arrival + "</td>"
+                            }
+                            x += "</table>"
+                            $("#demo").append(x);
+                            document.getElementById("demo").innerHTML = x;
+                        }
+                        document.getElementById('global_loader').style.display = 'none';
+
+                    },
+                    error: function () {
+                        infoContent = "<div>Sorry, data is not coming through. Refresh and try again.</div>";
+                        document.getElementById('global_loader').style.display = 'none';
+
+                    }
+                });
+            });
+        });
+    </script>
+    <style>
+        table {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 5%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 15px 28px;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        button {
+            border: 1px solid green;
+        }
+
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            background-color: #f91942;
+            color: white;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .heading {
+            text-align: center;
+            font-size: 40px;
+            font-family: inherit;
+            margin-top: 3%;
+        }
+
+        .row2 {
+            margin-top: 3%;
+        }
+
+        .button {
+            height: 32px;
+            width: 82px;
+            background-color: #f91942;
+            border-radius: 33px;
+            color: white;
+            border: 1px solid #f91942;
+            outline: none;
+        }
+
+        #trainNo {
+            border: 1px solid #f91942;
+            border-left: 2px solid #f91942
+        }
+
+        #demo {
+            margin-top: 5%;
+        }
+
+        .info1 {
+            margin-top: 10%;
+            background-color: #ebf6e0;
+            padding: 30px;
+            border-left: 10px solid red;
+        }
+
+        .main-div {
+            padding: 0;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .first-div {
+            padding-left: 25px;
+        }
+
+        .navbar-brand {
+            padding: 0;
+        }
+
+        .navbar-inverse .navbar-nav>li>a {
+            color: white;
+            font-size: 19px;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        .list {
+            margin-left: 15px;
+        }
+
+        .glb-ldr-prt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+    text-align: center;
+}
+
+.gl-ldr-cld {
+    vertical-align: middle;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+}
+
+.gl-ldr-ctr {
+    /* background-color: #f5f5f5; */
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+#global_loader .gl-ldr-ctr {
+    width: 80px;
+    height: 80px;
+    padding: 15px;
+}
+
+.gl-loader {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    border-top: 5px solid #f91942;
+    border-right: 5px solid rgba(0, 0, 0, 0.03);
+    border-bottom: 5px solid #f91942;
+    border-left: 5px solid #f91942;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: load8 1.1s infinite linear;
+    animation: load8 1.1s infinite linear;
+}
+
+.gl-loader,
+.gl-loader:after {
+    border-radius: 50%;
+}
+
+@-webkit-keyframes gl-loader {
+    from{
+        -webkit-transform: rotate(0deg);
+    }
+    to{
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+.gl-loader {
+    -webkit-animation: gl-loader 0.5s linear infinite;
+}
+
+/* ---- loader css ends ---- */
+    </style>
+</head>
+
+<body>
+    <div class="main-div">
+        <nav class="navbar navbar-inverse" style="border-radius: 0;">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="mainPage.html"><img class="navbar-brand" src="TrainLogoComp.png"  style=height:45px></a>
+            </div>
+            <div class="collapse navbar-collapse first-div" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a class="list" href="liveTrain.html">Live Train Status</a></li>
+                    <li><a class="list" href="trainBwStation.html">Trains b/w Stations</a></li>
+                    <li><a class="list" href="autocomplete.html">Station Autocomplete</a></li>
+                    <li><a class="list" href="seatAvailability.html">Seat Availability</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row row1">
+                <div class="col-xs-12 heading">
+                    Station Autocomplete
+                </div>
+            </div>
+            <div class="row row2">
+                <div class="col-xs-offset-4 col-xs-3 ">
+                    <input type="text" class="form-control" id="trainNo" placeholder="Train No Or Station Abbr">
+                </div>
+                <div class="col-xs-2">
+                    <button class="button" id="findData">Find</button>
+                </div>
+            </div>
+
+            <div id="global_loader" class="glb-ldr-prt">
+                <div class="gl-ldr-cld display-flex justify-content-center align-items-center h-100">
+                  <div class="gl-ldr-ctr">
+                    <div class="gl-loader" id="g_loader"></div>
+                  </div>
+                </div>
+              </div>
+
+
+            <div id="info1">
+
+            </div>
+
+            <div id="demo" class=" text-center">
+            </div>
+            <div id="warning" class="text-center">
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    document.getElementById('global_loader').style.display = 'none';
+    </script>

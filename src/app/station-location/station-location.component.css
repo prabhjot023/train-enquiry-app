@@ -1,0 +1,31 @@
+example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+p{
+  padding-top:20px;
+  color: red;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+}
+  .t1{
+
+    width:70%;
+    margin:20px auto;
+  }
+  td{text-align: center;
+  }
+  #pw{
+    text-transform: uppercase;
+  }
+  th{
+
+    font-family:Arial, Helvetica, sans-serif;
+    text-align: center;
+  }

@@ -1,0 +1,373 @@
+<html>
+<head>
+    <title>live train status</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="data.json"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        var x = "", i;
+        $(document).ready(function () {
+            var arr=[];
+            $.get("data.json" , function(data, status){
+            for(x in data.data)
+            {
+            arr.push(data.data[x].code+"("+data.data[x].name+")");
+            }
+            });
+
+                $( "#trainNo1" ).autocomplete({
+                source: arr
+            });
+            $( "#trainNo2" ).autocomplete({
+                source: arr
+            });
+            $("#findData").click(function () {
+                from = $('#trainNo1').val();
+                train1 = from.split("(");
+                newTrain=train1[0];
+                from=newTrain;
+                to = $('#trainNo2').val();
+                train1 = to.split("(");
+                newTrain=train1[0];
+                to=newTrain;
+                document.getElementById('global_loader').style.display = 'block';
+                $.ajax({
+                    method: "GET",
+                    crossDomain: true,
+                    url: "https://indianrailapi.com/api/v2/TrainBetweenStation/apikey/70e575c2a470d662b486b52184cb3cf3/From/" + from + "/To/" + to + "/",
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        $("#info").empty();
+                        $(document.getElementById("info")).removeClass("info");
+                        if (data.Trains == null) {
+                            warning1 = "EITHER THE STATION CODES ARE WRONG OR THERE ARE NO TRAINS RUNNING";
+                            $("#demo").empty();
+                            document.getElementById("info").innerHTML = warning1;
+                            $(document.getElementById("info")).addClass("info");
+                        }
+                        else {
+                            x = "<table><tr><th>Train No</th><th>Train Name</th><th>Source</th><th>Arrival Time</th><th>Destination</th><th>Departure Time</th><th>Travel Time</th><th>Train Type</th></tr>"
+                            for (i in data.Trains) {
+                                x += "<tr><td>" + data.Trains[i].TrainNo + "</td><td>"
+                                    + data.Trains[i].TrainName + "</td><td>"
+                                    + data.Trains[i].Source + "</td><td>"
+                                    + data.Trains[i].ArrivalTime + "</td><td>"
+                                    + data.Trains[i].Destination + "</td><td>"
+                                    + data.Trains[i].DepartureTime + "</td><td>"
+                                    + data.Trains[i].TravelTime + "</td><td>"
+                                    + data.Trains[i].TrainType + "</td></tr>"
+                            }
+                            x += "</table>"
+
+                            $("#demo").append(x);
+                            document.getElementById("demo").innerHTML = x;
+                        } document.getElementById('global_loader').style.display = 'none';
+                    },
+
+                    error: function () {
+                        infoContent = "<div>Sorry, data is not coming through. Refresh and try again.</div>";
+                        document.getElementById('global_loader').style.display = 'none';    
+                    }
+                });
+            });
+        });
+    </script>
+    <style>
+        table {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 5%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 15px 28px;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        button {
+            border: 1px solid green;
+        }
+
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            background-color: #f91942;
+            color: white;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .heading {
+            text-align: center;
+            font-size: 40px;
+            font-family: inherit;
+            margin-top: 3%;
+        }
+
+        .row2 {
+            margin-top: 3%;
+        }
+
+        .button {
+            height: 32px;
+            width: 82px;
+            background-color: #f91942;
+            border-radius: 33px;
+            color: white;
+            border: 1px solid #f91942;
+            outline: none;
+        }
+
+        #trainNo1,
+        #trainNo2 {
+            border: 1px solid #f91942;
+            border-left: 2px solid #f91942;
+        }
+
+        #demo {
+            margin-top: 3%;
+            overflow: SCROLL;
+        }
+
+        .info {
+            margin-top: 10%;
+            background-color: #ebf6e0;
+            padding: 30px;
+            border-left: 10px solid red;
+        }
+
+        .main-div {
+            padding: 0;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .first-div {
+            padding-left: 25px;
+        }
+
+        .navbar-brand {
+            padding: 0;
+        }
+
+        .navbar-inverse .navbar-nav>li>a {
+            color: white;
+            font-size: 19px;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        .list{
+            margin-left: 15px;
+        }
+          /* ---- loader css start---- */
+.glb-ldr-prt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+    text-align: center;
+}
+
+.gl-ldr-cld {
+    vertical-align: middle;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+}
+
+.gl-ldr-ctr {
+    /* background-color: #f5f5f5; */
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+#global_loader .gl-ldr-ctr {
+    width: 80px;
+    height: 80px;
+    padding: 15px;
+}
+
+.gl-loader {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    border-top: 5px solid #f91942;
+    border-right: 5px solid rgba(0, 0, 0, 0.03);
+    border-bottom: 5px solid #f91942;
+    border-left: 5px solid #f91942;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: load8 1.1s infinite linear;
+    animation: load8 1.1s infinite linear;
+}
+
+.gl-loader,
+.gl-loader:after {
+    border-radius: 50%;
+}
+
+@-webkit-keyframes gl-loader {
+    from{
+        -webkit-transform: rotate(0deg);
+    }
+    to{
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+.gl-loader {
+    -webkit-animation: gl-loader 0.5s linear infinite;
+}
+
+/* ---- loader css ends ---- */
+.ui-autocomplete {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            float: left;
+            display: none;
+            min-width: 160px;   
+            padding: 4px 0;
+            margin: 0 0 10px 25px;
+            list-style: none;
+            background-color: #ffffff;
+            border-color: #ccc;
+            border-color: rgba(0, 0, 0, 0.2);
+            border-style: solid;
+            border-width: 1px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            -webkit-background-clip: padding-box;
+            -moz-background-clip: padding;
+            background-clip: padding-box;
+            *border-right-width: 2px;
+            *border-bottom-width: 2px;
+        }
+
+        .ui-menu-item > a.ui-corner-all {
+            display: block;
+            padding: 3px 15px;
+            clear: both;
+            font-weight: normal;
+            line-height: 18px;
+            color: #555555;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+        .ui-state-hover, .ui-state-active {
+            color: #ffffff;
+            text-decoration: none;
+            background-color: #0088cc;
+            border-radius: 0px;
+            -webkit-border-radius: 0px;
+            -moz-border-radius: 0px;
+            background-image: none;
+        }
+        .ui-helper-hidden-accessible{
+        display:none !important;
+        }     
+    </style>
+</head>
+<body>
+    <div class="main-div">
+        <nav class="navbar navbar-inverse" style="border-radius: 0;">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="mainPage.html"><img class="navbar-brand" src="TrainLogoComp.png"  style=height:45px></a>
+            </div>
+            <div class="collapse navbar-collapse first-div" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a class="list" href="liveTrain.html">Live Train Status</a></li>
+                    <li><a class="list" href="trainBwStation.html">Trains b/w Stations</a></li>
+                    <li><a class="list" href="autocomplete.html">Station Autocomplete</a></li>
+                    <li><a class="list" href="seatAvailability.html">Seat Availability</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+        <div class="row row1">
+            <div class="col-xs-12 heading">
+                Trains b/w Stations
+            </div>
+        </div>
+        <div class="row row2">
+            <div class="col-xs-offset-2 col-xs-3">
+                <input type="text" class="form-control" id="trainNo1" placeholder="Station Code1">
+            </div>
+            <div class="col-xs-3">
+                <input type="text" class="form-control" id="trainNo2" placeholder="Station Code2">
+            </div>
+            <div class="col-xs-2">
+                <button class="button" id="findData">Find</button>
+            </div>
+
+            <div id="global_loader" class="glb-ldr-prt">
+                <div class="gl-ldr-cld display-flex justify-content-center align-items-center h-100">
+                  <div class="gl-ldr-ctr">
+                    <div class="gl-loader" id="g_loader"></div>
+                  </div>
+                </div>
+              </div>
+
+        </div>
+        <div id="info">
+
+        </div>
+        <div id="info1">
+
+        </div>
+
+        <div id="demo" class=" text-center">
+        </div>
+        <div id="warning" class="text-center">
+
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
+<script>
+    document.getElementById('global_loader').style.display = 'none';
+    </script>

@@ -1,0 +1,72 @@
+<mat-card>
+
+    <form class="example-form form-group"#valueForm="ngForm" (submit)="getValues(valueForm)">
+        <mat-form-field class="example-full-width">
+          <mat-label>Train Number</mat-label>
+          <input required matInput placeholder="Train no" ngModel name="trainNo" #trainNo="ngModel"></mat-form-field>
+          <mat-form-field>
+            <mat-label>Choose a date</mat-label>
+            <input required matInput [matDatepicker]="picker"  ngModel name="newDate" #newDate="ngModel">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <br>
+  <button mat-raised-button color="accent" >
+      Find
+  </button>
+  <br>
+  
+    </form>
+    <!-- <table class="table table-bordered table-hover mat-elevation-z8 t1" *ngIf="a==1">
+      <thead>
+        <tr>
+          <th scope="col">Serial No</th>
+          <th scope="col">Station Name</th>
+          <th scope="col">Station Code </th>
+          <th scope="col">Distance </th>
+          <th scope="col">IsDeparted </th>
+          <th scope="col">Day </th>
+          <th scope="col">Schedule Arrival </th>
+          <th scope="col"> Actual Arrival</th>
+          <th scope="col">Delay In Arrival </th>
+          <th scope="col">Schedule Departure </th>
+          <th scope="col">Actual Departure</th>
+          <th scope="col">Delay In Departure</th>
+
+        </tr>
+      </thead>
+      <tbody  >
+       <tr *ngFor="let k of live">
+        <td>{{k.SerialNo}} </td>
+        <td >{{k.StationName}}</td>
+        <td>{{k.StationCode}}</td>
+        <td>{{k.Distance}}</td>
+        <td>{{k.IsDeparted}}</td>
+        <td>{{k.Day}}</td>
+        <td>{{k.ScheduleArrival}}</td>
+        <td>{{k.ActualArrival}}</td>
+        <td>{{k.DelayInArrival}}</td>
+        
+        <td>{{k.ScheduleDeparture}}</td>
+        <td>{{k.ActualDeparture}}</td>
+        <td>{{k.DelayInDeparture}}</td>
+
+  
+         
+        </tr>
+         
+      </tbody>
+      
+    </table>
+    <div >
+<p>
+  Cuurently Train is on :{{current.StationName}}
+</p>
+    </div>
+    <div  *ngIf="er==1" >
+      <p>No such Train Running</p>
+       </div> -->
+    <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">  
+      <p style="color: white">Please Wait. </p>  
+      </ngx-spinner>    
+</mat-card>

@@ -1,0 +1,47 @@
+<mat-card>
+
+    <form class="example-form form-group" #valueForm="ngForm" (submit)="getValues(valueForm)">
+        <mat-form-field class="example-full-width">
+          <mat-label>Station Code or Station name</mat-label>
+          <input required matInput placeholder="Station code/name" ngModel name="stationCode" #stationCode="ngModel"></mat-form-field>
+          
+          <br>
+  <button mat-raised-button color="accent" >
+      Find
+  </button>
+
+  </form>
+
+  <table class="table table-bordered table-hover mat-elevation-z8 t1" *ngIf="a==1">
+    <thead>
+      <tr>
+        <th scope="col">Name(En)</th>
+        <th scope="col">Name(Hn)</th>
+        <th scope="col">Station Code </th>
+        <th scope="col">Longitude </th>
+        <th scope="col">Latitude </th>
+      </tr>
+    </thead>
+    <tbody  >
+     <tr *ngFor="let k of stationAuto">
+      <td>{{k.NameEn}} </td>
+      <td >{{k.NameHn}}</td>
+      <td>{{k.StationCode}}</td>
+      <td>{{k.Longitude}}</td>
+      <td>{{k.Latitude}}</td>
+
+
+       
+      </tr>
+       
+    </tbody>
+    
+  </table>
+
+  <div  *ngIf="er==1" >
+ <p>No such Station Code or Name</p>
+  </div>
+  <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">  
+    <p style="color: white">Please Wait. </p>  
+    </ngx-spinner>    
+</mat-card>

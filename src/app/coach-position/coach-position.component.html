@@ -1,0 +1,45 @@
+<mat-card>
+
+    <form class="example-form form-group" #valueForm="ngForm" (submit)="getValues(valueForm)">
+        <mat-form-field class="example-full-width">
+          <mat-label>Train Number</mat-label>
+          <input required matInput placeholder="Train Number" ngModel name="stationCode" #stationCode="ngModel"></mat-form-field>
+          
+          <br>
+  <button mat-raised-button color="accent" >
+      Find
+  </button>
+
+  </form>
+
+  <table class="table table-bordered table-hover mat-elevation-z8 t1 " *ngIf="a==1">
+    <thead>
+      <tr>
+        <th scope="col">Serial No</th>
+        <th scope="col">Code</th>
+        <th scope="col">Name</th>
+        <th scope="col">Number</th>
+        
+      </tr>
+    </thead>
+    <tbody  >
+     <tr *ngFor="let k of stationAuto">
+      <td>{{k.SerialNo}} </td>
+      <td >{{k.Code}}</td>
+      <td>{{k.Name}}</td>
+      <td>{{k.Number}}</td>
+      
+       
+      </tr>
+       
+    </tbody>
+    
+  </table>
+
+  <div  *ngIf="er==1" >
+ <p>No Such Train Number</p>
+  </div>
+  <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">  
+    <p style="color: white">Please Wait. </p>  
+    </ngx-spinner>    
+</mat-card>

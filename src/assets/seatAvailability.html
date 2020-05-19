@@ -1,0 +1,428 @@
+<html>
+
+<head>
+    <title>SEAT</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        var x = "", i;
+        $(document).ready(function () {
+            var y;
+            $("select.mySelect").change(function () {
+                y = $(this).children("option:selected").val();
+            });
+
+            var arr = [];
+            var dup;
+            $("#trainNo").on("change paste keyup", function () {
+                dup = $(this).val();
+            });
+
+            $("#from").click(function () {
+            
+                $.get("https://indianrailapi.com/api/v2/TrainSchedule/apikey/9df739876e6888123aeae384cf5121f6/TrainNumber/" + dup + "/", function (data, status) {
+
+                    for (x in data.Route) {
+                        arr.push(data.Route[x].StationCode);
+                    }
+                });
+
+                $("#from").autocomplete({
+                    source: arr
+                });
+            });
+
+            $("#To").click(function () {
+                $.get("https://indianrailapi.com/api/v2/TrainSchedule/apikey/9df739876e6888123aeae384cf5121f6/TrainNumber/" + dup + "/", function (data, status) {
+
+                    for (x in data.Route) {
+                        arr.push(data.Route[x].StationCode);
+                    }
+                });
+
+                $("#To").autocomplete({
+                    source: arr
+                });
+            });
+            $("button").click(function () {
+                trainNo = $('#trainNo').val();
+                date1 = $('#date').val();
+                from1 = $('#from').val();
+                to1 = $('#To').val();
+                dateArry = date1.split("-");
+                if (dateArry[0] < 2019 || (dateArry[1] < 0 || dateArry[1] > 12) || (dateArry[2] < 0 || dateArry[2] > 31)) {
+                    document.getElementById("info").innerHTML = "Warning!!! Please Enter a Valid Date";
+                    $(document.getElementById("info")).addClass("info");
+                    $("#demo").empty();
+                }
+                else {
+                    newDate = dateArry[0] + dateArry[1] + dateArry[2];
+                    $.ajax({
+                        method: "GET",
+                        crossDomain: true,
+                        url: "https://indianrailapi.com/api/v2/SeatAvailability/apikey/9df739876e6888123aeae384cf5121f6/TrainNumber/" + trainNo + "/From/" + from1 + "/To/" + to1 + "/Date/" + newDate + "/Quota/GN/Class/" + y + "/",
+                        dataType: "json",
+                        async: true,
+                        success: function (data) {
+                            if (data.TrainNo == null) {
+                                warning1 = "NO Information Available";
+                                $("#demo").empty();
+                                document.getElementById("info").innerHTML = warning1;
+                                $(document.getElementById("info")).addClass("info");
+                            }
+                            else {
+                                document.getElementById("info").innerHTML = "Data Found";
+                                $(document.getElementById("info")).addClass("info");
+                                x = "<table><tr><th>Journey Date</th><th>Availability</th><th>Confirm</th></tr>"
+                                for (i in data.Availability) {
+                                    x += "<tr><td>" + data.Availability[i].JourneyDate + "</td>" +
+                                        "<td>" + data.Availability[i].Availability + "</td>" +
+                                        "<td>" + data.Availability[i].Confirm + "</td></tr>";
+                                }
+                                x += "</table>";
+                                $("#demo").append(x);
+                                document.getElementById("demo").innerHTML = x;
+
+                            }
+                        },
+                        error: function () {
+                            infoContent = "<div>Sorry, data is not coming through. Refresh and try again.</div>";
+                       
+
+                        }
+
+                    });
+                }
+            });
+        });
+
+    </script>
+    <style>
+        .heading {
+            text-align: center;
+            font-size: 50px;
+            font-family: inherit;
+            margin-top: 5%;
+        }
+
+        .row2 {
+            margin-top: 10%;
+        }
+
+        /* .ui-helper-hidden-accessible {
+            display: none;
+        } */
+
+        .button {
+            height: 32px;
+            width: 82px;
+            background-color: #f91942;
+            border-radius: 33px;
+            color: white;
+            border: 1px solid #f91942;
+            outline: none;
+        }
+
+        #img {
+            margin: 10px;
+            border-radius: 5px;
+            height: 50px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .info {
+            margin-top: 10%;
+            background-color: #ebf6e0;
+            padding: 30px;
+            border-left: 10px solid red;
+        }
+
+        table {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 5%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 15px 28px;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        button {
+            border: 1px solid green;
+        }
+
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            background-color: #f91942;
+            color: white;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .heading {
+            text-align: center;
+            font-size: 40px;
+            font-family: inherit;
+            margin-top: 3%;
+        }
+
+        .row2 {
+            margin-top: 3%;
+        }
+
+        .button {
+            height: 32px;
+            width: 82px;
+            background-color: #f91942;
+            border-radius: 33px;
+            color: white;
+            border: 1px solid #f91942;
+            outline: none;
+        }
+
+        #trainNo,
+        #date,
+        #from,
+        #to,
+        .mySelect {
+            border: 1px solid coral;
+            border-left: 2px solid #f91942;
+        }
+
+        .mySelect {
+            line-height: 3;
+            border-radius: .25em;
+            padding: 7px;
+        }
+
+        #demo {
+            margin-top: 3%;
+            OVERFLOW: SCROLL;
+
+        }
+
+        .info {
+            margin-top: 10%;
+            background-color: #ebf6e0;
+            padding: 30px;
+            border-left: 10px solid red;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .main-div {
+            padding: 0;
+        }
+
+        .first-div {
+            padding-left: 25px;
+        }
+
+        .navbar-brand {
+            padding: 0;
+        }
+
+        .navbar-inverse .navbar-nav>li>a {
+            color: white;
+            font-size: 19px;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        .list {
+            margin-left: 15px;
+        }
+
+        .ui-autocomplete {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            float: left;
+            display: none ;
+            min-width: 160px;
+            padding: 4px 0;
+            margin: 0 0 10px 25px;
+            list-style: none;
+            background-color: #ffffff;
+            border-color: #ccc;
+            border-color: rgba(0, 0, 0, 0.2);
+            border-style: solid;
+            border-width: 1px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            -webkit-background-clip: padding-box;
+            -moz-background-clip: padding;
+            background-clip: padding-box;
+            *border-right-width: 2px;
+            *border-bottom-width: 2px;
+        }
+        .ui-helper-hidden-accessible{
+    display:none !important;
+}
+
+        .ui-menu-item>a.ui-corner-all {
+            display: block;
+            padding: 3px 15px;
+            clear: both;
+            font-weight: normal;
+            line-height: 18px;
+            color: #555555;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+        .ui-state-hover,
+        .ui-state-active {
+            color: #ffffff;
+            text-decoration: none;
+            background-color: #0088cc;
+            border-radius: 0px;
+            -webkit-border-radius: 0px;
+            -moz-border-radius: 0px;
+            background-image: none;
+        }
+
+        #m {
+            text-align: center;
+        }
+        .bb{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-div">
+        <nav class="navbar navbar-inverse" style="border-radius: 0;">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="mainPage.html"><img class="navbar-brand" src="TrainLogoComp.png" style=height:45px></a>
+            </div>
+            <div class="collapse navbar-collapse first-div" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a class="list" href="liveTrain.html">Live Train Status</a></li>
+                    <li><a class="list" href="trainBwStation.html">Trains b/w Stations</a></li>
+                    <li><a class="list" href="autocomplete.html">Station Autocomplete</a></li>
+                    <li><a class="list" href="seatAvailability.html">Seat Availability</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row row1">
+                <div class="col-md-12 heading">
+                    SEAT AVAILABILITY CHECK
+
+                </div>
+            </div>
+            <div class="row row4">
+                <div class="col-md-12" id="m">
+                    <img src="abc.jpeg" id="img">
+                </div>
+            </div>
+            <div class="row row2">
+                <div class="col-md-2">
+                    <input type="number" class="form-control" id="trainNo" placeholder="Train No.">
+                </div>
+                <div class="col-md-3">
+                    <div class="ui-widget">
+                        <input type="text" class="form-control" id="from" placeholder="From">
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <div class="ui-widget">
+                        <input type="text" class="form-control" id="To" placeholder="To">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <input type="date" class="form-control" id="date" placeholder="Date in YYYY/MM/DD">
+                </div>
+
+                <div class="col-md-2">
+                    <div class="dropdown">
+                        <select class="mySelect">
+                            <option value="All" active> All Classes</option>
+                            <option value="1A">AC First Class</option>
+                            <option value="2A">AC 2 Tier</option>
+                            <option value="3A">AC 3 Tier</option>
+                            <option value="CC">AC Chair Car</option>
+                            <option value="SL">Sleeper</option>
+                            <option value="2S">Second Sitting</option>
+                            <option value="3E">AC 3 Economy</option>
+                            <option value="EC">Exec. Chair Car</option>
+                            <option value="TQ">Tatkal</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-offset-12">
+                    <br>
+                    <br>
+                </div>
+            </div>
+            <div class="row row3">
+                <div class="col-md-3">
+
+                </div>
+                <div>
+                    <div class="col-md-12 bb">
+                        <button class="button">Check</button>
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+                </div>
+
+                <div id="info">
+
+                </div>
+                <div id="info1">
+
+                </div>
+
+                <div id="demo" class=" text-center">
+                </div>
+                <div id="warning" class="text-center">
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
