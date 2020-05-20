@@ -19,13 +19,31 @@ p{
     width:70%;
     margin:20px auto;
   }
-  td{text-align: center;
-  }
+ 
   #pw{
     text-transform: uppercase;
   }
   th{
+    font-size: 20px;
+  }
+  td{
+    font-size:16px;
+  }
+  th,td{
 
     font-family:Arial, Helvetica, sans-serif;
     text-align: center;
+    border:5px double lightpink;
+    color: rgb(241, 44, 77);
+    
   }
+
+ #hover:hover{
+  background-color: rgb(252, 220, 225);
+    
+ }
+ table{
+  border:solid 7px;
+  border-color: rgb(241, 44, 77) lightpink lightpink  rgb(241, 44, 77);
+  
+}

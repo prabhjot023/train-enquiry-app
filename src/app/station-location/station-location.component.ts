@@ -28,7 +28,7 @@ export class StationLocationComponent implements OnInit {
       
       this.http.get(this._url).subscribe((data:any) =>{
         
-        this.stationAuto,this.er=0;
+
         this.stationAuto=data;
         if(this.stationAuto == null)
         {

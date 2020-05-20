@@ -4,7 +4,9 @@
         <mat-form-field class="example-full-width">
           <mat-label>Train Number</mat-label>
           <input required matInput placeholder="Train Number" ngModel name="stationCode" #stationCode="ngModel"></mat-form-field>
-          
+          <mat-error *ngIf="stationCode.invalid && stationCode.touched">
+            *Please provide Train Number
+            </mat-error>
           <br>
   <button mat-raised-button color="accent" >
       Find
@@ -22,8 +24,9 @@
         
       </tr>
     </thead>
-    <tbody  >
-     <tr *ngFor="let k of stationAuto">
+    <tbody>
+      
+     <tr *ngFor="let k of stationAuto" id="hover">
       <td>{{k.SerialNo}} </td>
       <td >{{k.Code}}</td>
       <td>{{k.Name}}</td>

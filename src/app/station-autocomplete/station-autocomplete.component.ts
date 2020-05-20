@@ -24,11 +24,13 @@ er=0;
   }
   getValues(form:NgForm)
   {
-    
+   
+    if(form.value.stationCode!= 0)
+    {
     this._url="https://indianrailapi.com/api/v2/AutoCompleteStation/apikey/63593fd46f3c19d15de114fb67812739/StationCodeOrName/"+ form.value.stationCode+"/";
     this.SpinnerService.show();  
     this.http.get(this._url).subscribe((data:any) =>{
-      this.stationAuto,this.er=0;
+     
       this.stationAuto=data.Station;
       if(this.stationAuto[0] == null)
       {
@@ -42,7 +44,9 @@ er=0;
       this.SpinnerService.hide(); 
     });
     this.a=1;
+  
+  
   }
   
-
+}
 }

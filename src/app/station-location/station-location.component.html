@@ -4,8 +4,10 @@
     <form class="example-form form-group" #valueForm="ngForm" (submit)="getValues(valueForm)">
         <mat-form-field class="example-full-width">
           <mat-label>Station Code </mat-label>
-          <input required matInput placeholder="Station code/name" ngModel name="stationCode" #stationCode="ngModel"></mat-form-field>
-          
+          <input required matInput placeholder="Station code" ngModel name="stationCode" #stationCode="ngModel"></mat-form-field>
+          <mat-error *ngIf="stationCode.invalid && stationCode.touched">
+            *Please provide Station Code 
+            </mat-error>
           <br>
           
   <button mat-raised-button color="accent" >
@@ -25,7 +27,7 @@
       </tr>
     </thead>
     <tbody  >
-     <tr >
+     <tr id="hover" >
       <td>{{stationAuto.StationName}} </td>
       <td id="pw" >{{stationAuto.StationCode}}</td>
       <td>

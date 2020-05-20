@@ -14,14 +14,33 @@ p{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 20px;
 }
+table{
+  border:solid 7px;
+  border-color:#B22222 #FEB9B9 #FEB9B9 #B22222;
+  
+}
+
   .t1{
 
     width:70%;
     margin:20px auto;
   }
-  td{text-align: center;}
   th{
+    font-size: 20px;
+  }
+  td{
+    font-size:16px;
+  }
+  th,td{
 
     font-family:Arial, Helvetica, sans-serif;
     text-align: center;
+    border:5px double #FEB9B9;
+    color: #B22222;
+    
   }
+
+ #hover:hover{
+  background-color: #FDC7BC;
+    
+ }

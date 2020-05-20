@@ -28,7 +28,7 @@ er=0;
     this.SpinnerService.show();
     this._url="https://indianrailapi.com/api/v2/AutoCompleteTrainInformation/apikey/a1a72eb5ca2a37a39fe3900cdb7c5c0b/TrainNumberOrName/"+ form.value.TrainNo+"/";
     this.http.get(this._url).subscribe((data:any) =>{
-     this.stationAuto,this.ol,this.er=0;
+     
       this.stationAuto=data.Trains;
       if(this.stationAuto[0] == null)
       {

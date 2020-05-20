@@ -20,12 +20,26 @@ example-form {
     margin:20px auto;
   }
   th{
-    text-align: center;
     font-size: 20px;
+  }
+  td{
+    font-size:16px;
+  }
+  th,td{
 
+    font-family:Arial, Helvetica, sans-serif;
+    text-align: center;
+    border:5px double lightblue;
+    color: blue
+    
   }
-  td{text-align: center;}
-  table
-  {
-    font-family: 'Times New Roman', Times, serif;
-  }
+
+ #hover:hover{
+  background-color: rgb(209, 233, 241);
+    
+ }
+ table{
+  border:solid 7px;
+  border-color:blue lightblue lightblue blue;
+  
+}

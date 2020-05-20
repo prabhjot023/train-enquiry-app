@@ -26,7 +26,7 @@ export class CoachPositionComponent implements OnInit {
       this._url="https://indianrailapi.com/api/v2/CoachPosition/apikey/63593fd46f3c19d15de114fb67812739/TrainNumber/"+ form.value.stationCode+"/";
       this.SpinnerService.show();  
       this.http.get(this._url).subscribe((data:any) =>{
-        this.stationAuto,this.er=0;
+       
         this.stationAuto=data.Coaches;
         if(this.stationAuto[0] == null)
         {

@@ -26,7 +26,7 @@ export class LiveTrainStatusComponent implements OnInit {
     this._url="https://.com/api/v2/livetrainstatus/apikey/9df739876e6888123aeae384cf5121f6/trainnumber/" + form.value.trainNo + "/date/" + form.value.newDate + "/";
     this.http.get(this._url).subscribe((data :any) =>{
       console.log(data);
-      this.er,this.live,this.current=0;
+      
       this.live=data.TrainRoute;
       this.current=data.CurrentStation;
       if(this.live[0] == null)

@@ -19,9 +19,28 @@ p{
     width:70%;
     margin:20px auto;
   }
-  td{text-align: center;}
+  
   th{
+    font-size: 20px;
+  }
+  td{
+    font-size:16px;
+  }
+  th,td{
 
     font-family:Arial, Helvetica, sans-serif;
     text-align: center;
+    border:5px double lightgreen;
+    color: green;
+    
   }
+
+ #hover:hover{
+  background-color: rgb(198, 245, 198);
+    
+ }
+ table{
+  border:solid 7px;
+  border-color:green lightgreen lightgreen green;
+  
+}
