@@ -30,10 +30,12 @@ export class StationLocationComponent implements OnInit {
         
 
         this.stationAuto=data;
-        if(this.stationAuto == null)
+        if(this.stationAuto.StatioName == null)
         {
          this.er=1;
+        
         }
+        console.log(this.stationAuto);
         
         console.log(this.stationAuto);
       },error =>{
